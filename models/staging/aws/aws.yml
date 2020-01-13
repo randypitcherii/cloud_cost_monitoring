@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: aws_costs
+    database: fivetran_db
+    schema: hashmap_aws_cost_monitoring
+    loader: fivetran # informational only (free text)
+    loaded_at_field: _fivetran_synced # configure for all sources
+    
+    freshness:
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
+      
+    tables:
+      - name: hashmap_aws_costs
+        loaded_at_field: updated_at # used to calculate freshness
