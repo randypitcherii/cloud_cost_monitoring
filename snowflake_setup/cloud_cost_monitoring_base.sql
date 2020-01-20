@@ -68,7 +68,7 @@ USE ROLE SECURITYADMIN;
 CREATE ROLE CLOUD_COST_MONITORING_DEV_WH_ALL;
 
 // grant all roles to sysadmin (always do this)
-GRANT ROLE CLOUD_COST_MONITORING_DEV_WH_ALL               TO ROLE SYSADMIN;
+GRANT ROLE CLOUD_COST_MONITORING_DEV_WH_ALL TO ROLE SYSADMIN;
 //=============================================================================
  
 
