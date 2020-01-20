@@ -3,10 +3,10 @@
 //=============================================================================
 USE ROLE SYSADMIN;
 
-// reporting warehouse
+// prod warehouse
 CREATE WAREHOUSE
-    SIGMA_CLOUD_COST_MONITORING_REPORTING_WH
-    COMMENT='Warehouse for powering reporting queries from Sigma'
+    CLOUD_COST_MONITORING_PROD_WH
+    COMMENT='Warehouse for powering CI prod activities for the cloud cost monitoring project'
     WAREHOUSE_SIZE=XSMALL
     AUTO_SUSPEND=60
     INITIALLY_SUSPENDED=TRUE;
@@ -18,11 +18,11 @@ CREATE WAREHOUSE
 //=============================================================================
 USE ROLE SECURITYADMIN;
 
-// reporting roles for the sigma service account
-CREATE ROLE SIGMA_CLOUD_COST_MONITORING_REPORTING_WH_USAGE;
+// prod roles for ci (also not for humans)
+CREATE ROLE CLOUD_COST_MONITORING_PROD_WH_USAGE;
 
 // grant all roles to sysadmin (always do this)
-GRANT ROLE SIGMA_CLOUD_COST_MONITORING_REPORTING_WH_USAGE TO ROLE SYSADMIN;
+GRANT ROLE CLOUD_COST_MONITORING_PROD_WH_USAGE TO ROLE SYSADMIN;
 //=============================================================================
 
 
@@ -31,8 +31,8 @@ GRANT ROLE SIGMA_CLOUD_COST_MONITORING_REPORTING_WH_USAGE TO ROLE SYSADMIN;
 //=============================================================================
 USE ROLE SECURITYADMIN;
 
-// reporting permissions
-GRANT USAGE ON WAREHOUSE SIGMA_CLOUD_COST_MONITORING_REPORTING_WH TO ROLE SIGMA_CLOUD_COST_MONITORING_REPORTING_WH_USAGE;
+// prod permissions
+GRANT USAGE ON WAREHOUSE CLOUD_COST_MONITORING_PROD_WH TO ROLE CLOUD_COST_MONITORING_PROD_WH_USAGE;
 //=============================================================================
 
 
@@ -41,13 +41,16 @@ GRANT USAGE ON WAREHOUSE SIGMA_CLOUD_COST_MONITORING_REPORTING_WH TO ROLE SIGMA_
 //=============================================================================
 USE ROLE SECURITYADMIN;
  
-// reporter roles
-CREATE ROLE SIGMA_CLOUD_COST_MONITORING_REPORTER;
-GRANT ROLE SIGMA_CLOUD_COST_MONITORING_REPORTER TO ROLE SYSADMIN;
+// transformer roles
+CREATE ROLE CLOUD_COST_MONITORING_PROD_TRANSFORMER;
+ 
+// grant all roles to sysadmin (always do this)
+GRANT ROLE CLOUD_COST_MONITORING_PROD_TRANSFORMER TO ROLE SYSADMIN;
 
-// grant OA roles to BF roles
-GRANT ROLE CLOUD_COST_MONITORING_PROD_REPORTING_READ      TO ROLE SIGMA_CLOUD_COST_MONITORING_REPORTER;
-GRANT ROLE SIGMA_CLOUD_COST_MONITORING_REPORTING_WH_USAGE TO ROLE SIGMA_CLOUD_COST_MONITORING_REPORTER;
+// prod OA roles 
+GRANT ROLE CLOUD_COST_MONITORING_PROD_READ_WRITE TO ROLE CLOUD_COST_MONITORING_PROD_TRANSFORMER;
+GRANT ROLE CLOUD_COST_MONITORING_PROD_WH_USAGE   TO ROLE CLOUD_COST_MONITORING_PROD_TRANSFORMER;
+GRANT ROLE FIVETRAN_READ_ROLE                    TO ROLE CLOUD_COST_MONITORING_PROD_TRANSFORMER;
 //=============================================================================
 
 
@@ -58,13 +61,13 @@ USE ROLE SECURITYADMIN;
  
 // create service account
 CREATE USER 
-  SIGMA_CLOUD_COST_MONITORING_SERVICE_ACCOUNT
+  DBT_CLOUD_COST_MONITORING_PROD_SERVICE_ACCOUNT
   PASSWORD = 'my cool password here' // use your own password 
-  COMMENT = 'Service account for connecting Sigma Computing to Snowflake for Cloud Cost Monitoring reports.'
-  DEFAULT_WAREHOUSE = SIGMA_CLOUD_COST_MONITORING_REPORTING_WH
-  DEFAULT_ROLE = SIGMA_CLOUD_COST_MONITORING_REPORTER
+  COMMENT = 'Service account for DBT CI/CD in the prod environment of the Cloud Cost Monitoring project.'
+  DEFAULT_WAREHOUSE = CLOUD_COST_MONITORING_PROD_WH
+  DEFAULT_ROLE = CLOUD_COST_MONITORING_PROD_TRANSFORMER
   MUST_CHANGE_PASSWORD = FALSE;
 
 // grant permissions to service account
-GRANT ROLE SIGMA_CLOUD_COST_MONITORING_REPORTING_WH TO USER SIGMA_CLOUD_COST_MONITORING_SERVICE_ACCOUNT;
+GRANT ROLE CLOUD_COST_MONITORING_PROD_TRANSFORMER TO USER DBT_CLOUD_COST_MONITORING_PROD_SERVICE_ACCOUNT;
 //=============================================================================
