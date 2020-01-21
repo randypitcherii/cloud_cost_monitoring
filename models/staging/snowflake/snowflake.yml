@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: snowflake_usage
+    database: fivetran_db
+    schema: hashmap_snowflake_usage
+    loader: fivetran # informational only (free text)
+    loaded_at_field: ingestion_time # used to calculate freshness
+    
+    freshness:
+      warn_after: {count: 24, period: hour}
+      
+    tables:
+      - name: query_history
+      - name: warehouse_metering_history
