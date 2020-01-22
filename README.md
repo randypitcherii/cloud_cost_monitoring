@@ -4,4 +4,4 @@ This DBT project contains logic for converting raw cost data loaded from Azure, 
 Snowflake costs are also gathered from the `ACCOUNT_USAGE` tables.
 
 ## Snowflake setup
-I used the [snowflake_init.sql](./snowflake_init.sql) file to create the top level databases, warehouse, and permissions that I use for deploying to Snowflake. This is pretty hashmap-specific, so feel free to use / modify / ignore this. 
+I used the sql in [snowflake_setup](./snowflake_setup) to create the top level databases, warehouse, and permissions that I use for deploying to Snowflake. This is pretty hashmap-specific, so feel free to use / modify / ignore this. 

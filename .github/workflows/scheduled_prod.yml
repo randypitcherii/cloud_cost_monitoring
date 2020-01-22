@@ -1,0 +1,38 @@
+name: Scheduled production run
+
+on:
+  schedule:
+    - cron:  '0 */1 * * *' # Run every hour
+
+env:
+  DBT_PROFILE_TARGET:            prod
+  DBT_PROFILE_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_PROFILE_SNOWFLAKE_ACCOUNT }}
+  DBT_PROFILE_USER:              ${{ secrets.DBT_PROFILE_PROD_USER }}
+  DBT_PROFILE_PASSWORD:          ${{ secrets.DBT_PROFILE_PROD_PASSWORD }}
+  DBT_PROFILE_ROLE:              CLOUD_COST_MONITORING_PROD_TRANSFORMER
+  DBT_PROFILE_DB:                CLOUD_COST_MONITORING_PROD
+  DBT_PROFILE_SCHEMA:            STAGING
+  DBT_PROFILE_WH:                CLOUD_COST_MONITORING_PROD_WH
+
+jobs:
+  prod:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v2
+
+    - name: Install Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install DBT
+      run: |
+        python -m pip install --upgrade pip
+        pip install dbt
+
+    - name: Deploy
+      run: |
+        dbt run --profiles-dir ./ci_profiles
+    
