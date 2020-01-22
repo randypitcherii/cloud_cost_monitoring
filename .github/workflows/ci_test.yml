@@ -9,7 +9,6 @@ env:
   DBT_PROFILE_PASSWORD:          ${{ secrets.DBT_PROFILE_TEST_PASSWORD }}
   DBT_PROFILE_ROLE:              CLOUD_COST_MONITORING_TEST_TRANSFORMER
   DBT_PROFILE_DB:                CLOUD_COST_MONITORING_TEST
-  DBT_PROFILE_SCHEMA:            ${{ github.sha }}
   DBT_PROFILE_WH:                CLOUD_COST_MONITORING_TEST_WH
 
 jobs:
@@ -32,6 +31,7 @@ jobs:
 
     - name: Deploy
       run: |
+        export DBT_PROFILE_SCHEMA=pr_$(date +%s)
         dbt run --profiles-dir ./ci_profiles
         dbt test --profiles-dir ./ci_profiles
     
