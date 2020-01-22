@@ -3,36 +3,19 @@
 # https://docs.getdbt.com/docs/profile
 
 cloud_cost_monitoring:
-  target: "{{ env_var('TARGET') }}"
+  target: default
+
   outputs:
-
-
-    test:
+    default:
       type: snowflake
-      account: hashmap
+      account: "{{ env_var('DBT_PROFILE_SNOWFLAKE_ACCOUNT') }}"
 
-      user:      "{{ env_var('DBT_PROFILE_TEST_USER') }}"
-      password:  "{{ env_var('DBT_PROFILE_TEST_PASSWORD') }}"
-      role:      "{{ env_var('DBT_PROFILE_TEST_ROLE') }}"
-      database:  "{{ env_var('DBT_PROFILE_TEST_DB') }}"
-      warehouse: "{{ env_var('DBT_PROFILE_TEST_WH') }}"
-      schema:    "{{ env_var('DBT_PROFILE_TEST_SCHEMA') }}"
-
-      threads: 8
-      client_session_keep_alive: False
-
-
-
-    prod:
-      type: snowflake
-      account: hashmap
-
-      user:      "{{ env_var('DBT_PROFILE_PROD_USER') }}"
-      password:  "{{ env_var('DBT_PROFILE_PROD_PASSWORD') }}"
-      role:      "{{ env_var('DBT_PROFILE_PROD_ROLE') }}"
-      database:  "{{ env_var('DBT_PROFILE_PROD_DB') }}"
-      warehouse: "{{ env_var('DBT_PROFILE_PROD_WH') }}"
-      schema:    "{{ env_var('DBT_PROFILE_PROD_SCHEMA') }}"
+      user:      "{{ env_var('DBT_PROFILE_USER') }}"
+      password:  "{{ env_var('DBT_PROFILE_PASSWORD') }}"
+      role:      "{{ env_var('DBT_PROFILE_ROLE') }}"
+      database:  "{{ env_var('DBT_PROFILE_DB') }}"
+      warehouse: "{{ env_var('DBT_PROFILE_WH') }}"
+      schema:    "{{ env_var('DBT_PROFILE_SCHEMA') }}"
 
       threads: 8
       client_session_keep_alive: False
