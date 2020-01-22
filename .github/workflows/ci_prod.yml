@@ -1,9 +1,6 @@
 name: Production deployment from master
 
-on: 
-  push:
-    branches:
-      - master
+on: push
 
 env:
   DBT_PROFILE_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_PROFILE_SNOWFLAKE_ACCOUNT }}
