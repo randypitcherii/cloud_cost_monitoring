@@ -3,7 +3,7 @@
 # https://docs.getdbt.com/docs/profile
 
 cloud_cost_monitoring:
-  target: "{{ env_var(DBT_PROFILE_TARGET) }}"
+  target: "{{ env_var('DBT_PROFILE_TARGET') }}"
 
   outputs: # test and prod are identical, but their target names has significance in different build stages
     test:
