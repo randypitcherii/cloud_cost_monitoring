@@ -3,6 +3,7 @@ name: Test deployment from a PR
 on: pull_request
 
 env:
+  DBT_PROFILE_TARGET:            test
   DBT_PROFILE_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_PROFILE_SNOWFLAKE_ACCOUNT }}
   DBT_PROFILE_USER:              ${{ secrets.DBT_PROFILE_TEST_USER }}
   DBT_PROFILE_PASSWORD:          ${{ secrets.DBT_PROFILE_TEST_PASSWORD }}

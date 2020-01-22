@@ -3,10 +3,24 @@
 # https://docs.getdbt.com/docs/profile
 
 cloud_cost_monitoring:
-  target: default
+  target: "{{ DBT_PROFILE_TARGET }}"
 
-  outputs:
-    default:
+  outputs: # test and prod are identical, but their target names has significance in different build stages
+    test:
+      type: snowflake
+      account: "{{ env_var('DBT_PROFILE_SNOWFLAKE_ACCOUNT') }}"
+
+      user:      "{{ env_var('DBT_PROFILE_USER') }}"
+      password:  "{{ env_var('DBT_PROFILE_PASSWORD') }}"
+      role:      "{{ env_var('DBT_PROFILE_ROLE') }}"
+      database:  "{{ env_var('DBT_PROFILE_DB') }}"
+      warehouse: "{{ env_var('DBT_PROFILE_WH') }}"
+      schema:    "{{ env_var('DBT_PROFILE_SCHEMA') }}"
+
+      threads: 8
+      client_session_keep_alive: False
+
+    prod:
       type: snowflake
       account: "{{ env_var('DBT_PROFILE_SNOWFLAKE_ACCOUNT') }}"
 

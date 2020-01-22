@@ -3,6 +3,7 @@ name: Production deployment from master
 on: push
 
 env:
+  DBT_PROFILE_TARGET:            prod
   DBT_PROFILE_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_PROFILE_SNOWFLAKE_ACCOUNT }}
   DBT_PROFILE_USER:              ${{ secrets.DBT_PROFILE_PROD_USER }}
   DBT_PROFILE_PASSWORD:          ${{ secrets.DBT_PROFILE_PROD_PASSWORD }}
