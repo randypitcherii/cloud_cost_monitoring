@@ -28,9 +28,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install dbt
 
-    - name: Generate test schema base
-      run: export DBT_PROFILE_TEST_SCHEMA=pr_$(date +%s)
-
     - name: Get secrets
       run: |
         export DBT_PROFILE_USER=$DBT_PROFILE_PROD_USER
