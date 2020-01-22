@@ -1,8 +1,6 @@
 name: Scheduled production run
 
-on:
-  schedule:
-    - cron:  '0 */1 * * *' # Run every hour
+on: push
 
 env:
   DBT_PROFILE_TARGET:            prod

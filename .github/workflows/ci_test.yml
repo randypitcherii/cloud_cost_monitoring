@@ -1,6 +1,6 @@
 name: Test deployment from a PR
 
-on: pull_request
+on: push
 
 env:
   DBT_PROFILE_TARGET:            test
