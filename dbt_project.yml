@@ -28,3 +28,6 @@ models:
     staging:
       schema: staging
       materialized: view
+    reporting:
+      schema: reporting
+      materialized: table
