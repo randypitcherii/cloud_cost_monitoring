@@ -3,9 +3,12 @@ name: Test deployment from a PR
 on: pull_request
 
 env:
-  DBT_PROFILE_ROLE: CLOUD_COST_MONITORING_TEST_TRANSFORMER
-  DBT_PROFILE_DB: CLOUD_COST_MONITORING_TEST
-  DBT_PROFILE_WH: CLOUD_COST_MONITORING_TEST_WH
+  DBT_PROFILE_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_PROFILE_SNOWFLAKE_ACCOUNT }}
+  DBT_PROFILE_USER:              ${{ secrets.DBT_PROFILE_TEST_USER }}
+  DBT_PROFILE_PASSWORD:          ${{ secrets.DBT_PROFILE_TEST_PASSWORD }}
+  DBT_PROFILE_ROLE:              CLOUD_COST_MONITORING_TEST_TRANSFORMER
+  DBT_PROFILE_DB:                CLOUD_COST_MONITORING_TEST
+  DBT_PROFILE_WH:                CLOUD_COST_MONITORING_TEST_WH
 
 jobs:
   prod:
@@ -27,11 +30,6 @@ jobs:
 
     - name: Generate test schema base
       run: export DBT_PROFILE_SCHEMA=pr_$(date +%s)
-
-    - name: Get secrets
-      run: |
-        export DBT_PROFILE_USER=$DBT_PROFILE_TEST_USER
-        export DBT_PROFILE_PASSWORD=$DBT_PROFILE_TEST_PASSWORD
 
     - name: Deploy
       run: |
