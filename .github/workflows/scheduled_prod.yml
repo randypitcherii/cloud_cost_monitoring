@@ -1,4 +1,4 @@
-name: Production deployment from master
+name: Scheduled production run
 
 on:
   schedule:
