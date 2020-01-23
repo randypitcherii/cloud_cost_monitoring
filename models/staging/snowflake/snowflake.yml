@@ -13,3 +13,17 @@ sources:
     tables:
       - name: query_history
       - name: warehouse_metering_history
+
+models:
+  - name: stg_hashmap_snowflake_daily_usage
+    description: This relation contains daily total metered credit usage for the hashmap AWS-flavored Snowflake instance.
+    columns:
+      - name: calculated_on
+        description: This is the date that usage was calculated on.
+        tests:
+          - not_null
+          - unique
+      - name: credits_used
+        description: This is the SUM of credits used on a given day.
+        tests:
+          - not_null
